@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StyleSheet, View, Image, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import QRCodeScanner from 'react-native-qrcode-scanner';
+import { BarCodeScanner, Camera, Permissions } from 'expo';
+import logoGist from './assets/logo_gist.png';
 
 const styles = StyleSheet.create({
   header: {
@@ -18,37 +19,80 @@ const styles = StyleSheet.create({
   initialForm: {
     padding: 25,
   },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)',
+  camera: {
+    width: 100,
+    height: 100,
+    alignItems: 'center',
+    transform: [{ rotate: '-90deg' }],
   },
-  buttonTouchable: {
-    padding: 16,
+  viewCamera: {
+    height: 100,
+    alignItems: 'center',
   },
 });
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { gistId: '', content: '', message: '' };
+    this.state = {
+      gistUrl: '',
+      content: '',
+      message: '',
+      hasCameraPermission: null,
+      type: Camera.Constants.Type.front,
+    };
 
-    this.onShowGist = () => () => {
-      const { gistId } = this.state;
+    this.onShowGist = () => {
+      const { gistUrl } = this.state;
+      const reg = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/;
+      let gistId;
+      try {
+        gistId = reg.exec(gistUrl)[6];
+      } catch (e) {
+        gistId = gistUrl;
+      }
+
       axios
         .get(`https://api.github.com/gists/${gistId}`)
         .then((response) => {
+          console.log(response);
           const { content } = response.files[0];
           this.setState({ content });
         })
         .catch((e) => {
+          console.log('aquiiii', e);
           const { message } = e.message;
           this.setState({ message });
+          alert(e.message);
         });
     };
 
-    this.readQRCode = (e) => {
-      this.setState({ gistId: e.data });
+    this.handleBarCodeRead = ({ data }) => {
+      this.setState({ gistUrl: data });
     };
+  }
+
+  async componentWillMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+  }
+
+  renderBarCode() {
+    const { hasCameraPermission } = this.state;
+    if (hasCameraPermission === null) {
+      return <View />;
+    } else if (hasCameraPermission === false) {
+      return <Text>No access to camera</Text>;
+    }
+    return (
+      <View style={styles.viewCamera}>
+        <BarCodeScanner
+          style={styles.camera}
+          onBarCodeRead={this.handleBarCodeRead}
+          type={this.state.type}
+        />
+      </View>
+    );
   }
 
   render() {
@@ -56,36 +100,23 @@ class App extends Component {
       <View>
         <View>
           <View style={styles.header}>
-            <Image style={styles.imgTop} source={require('./assets/logo_gist.png')} />
+            <Image style={styles.imgTop} source={logoGist} />
           </View>
           <View style={styles.initialForm}>
             <Text value={this.state.message} />
             <TextInput
               style={{ height: 50 }}
               placeholder="Gist URL"
-              onChangeText={gistId => this.setState({ gistId })}
-              value={this.state.gistId}
-            />
-            <QRCodeScanner
-              onRead={this.readQRCode(this)}
-              topContent={
-                <Text style={styles.centerText}>
-                  Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your
-                  computer and scan the QR code.
-                </Text>
-              }
-              bottomContent={
-                <TouchableOpacity style={styles.buttonTouchable}>
-                  <Text style={styles.buttonText}>OK. Got it!</Text>
-                </TouchableOpacity>
-              }
+              onChangeText={gistUrl => this.setState({ gistUrl })}
+              value={this.state.gistUrl}
             />
             <Button
-              onPress={() => this.onShowGist()}
+              onPress={this.onShowGist}
               title="Show Gist"
               color="cadetblue"
               accessibilityLabel="Show Gist"
             />
+            {this.renderBarCode()}
             <TextInput
               style={{ height: 50 }}
               placeholder="Gist Content"
