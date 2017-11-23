@@ -1,3 +1,9 @@
+## Install Android Studio and SDK's
+
+* [AndroidStudio](https://developer.android.com/studio/index.html?hl=pt-br)
+* Add to PATH (Linux Example) "export
+  PATH="$PATH:$HOME/Android/Sdk/platform-tools/""
+
 ## Install yarn or npm in version 4 (latest npm versions have bugs)
 
 * yarn global add create-react-native-app
@@ -17,6 +23,14 @@ versions
 ## With emulator opened, then execute:
 
 * npm run android
+
+## Observation
+
+* With the create-react-native-app it is not possible to install component
+  libraries, so the comment and display field of the gist were not good. There
+  are better text components than the native platform.
+
+[Youtube Demo](https://www.youtube.com/watch?v=EGGhSKGmM2U)
 
 This project was bootstrapped with
 [Create React Native App](https://github.com/react-community/create-react-native-app).
