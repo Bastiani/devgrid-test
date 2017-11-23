@@ -18,7 +18,8 @@ versions
 * https://www.virtualbox.org/
 * https://www.genymotion.com/fun-zone/
 
-### In the project folder, run npm install
+### In the project folder run:
+* npm install
 
 ## With emulator opened, then execute:
 
@@ -30,7 +31,7 @@ versions
   libraries, so the comment and display field of the gist were not good. There
   are better text components than the native platform.
 
-[Youtube Demo](https://www.youtube.com/watch?v=EGGhSKGmM2U)
+[![Alt text](https://img.youtube.com/vi/EGGhSKGmM2U/0.jpg)](https://www.youtube.com/watch?v=EGGhSKGmM2U)
 
 This project was bootstrapped with
 [Create React Native App](https://github.com/react-community/create-react-native-app).
