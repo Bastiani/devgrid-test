@@ -1,9 +1,5 @@
 {
   "expo": {
-    "sdkVersion": "22.0.0",
-    "splash": {
-      "image": "./assets/images/logo_gist.png",
-      "resizeMode": "cover"
-    }
+    "sdkVersion": "22.0.0"
   }
 }
