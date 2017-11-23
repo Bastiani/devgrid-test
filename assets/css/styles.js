@@ -22,11 +22,13 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '-90deg' }],
   },
   viewCamera: {
-    paddingTop: 10,
     height: 100,
     alignItems: 'center',
   },
   comment: {
+    paddingTop: 25,
+  },
+  viewFormGist: {
     paddingTop: 25,
   },
 });

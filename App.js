@@ -146,7 +146,7 @@ class App extends Component {
   renderGistForm() {
     if (this.state.loggedIn) {
       return (
-        <View>
+        <View style={styles.viewFormGist}>
           <TextInput
             style={{ height: 50 }}
             placeholder="Gist URL"
