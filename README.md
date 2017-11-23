@@ -1,12 +1,18 @@
 ## Install yarn or npm in version 4 (latest npm versions have bugs)
 
-* yarn global add create-react-native-app or
+* yarn global add create-react-native-app
+* or
 * npm install -g create-react-native-app
+
+Tip: Install [nvm](https://github.com/creationix/nvm) for manage node/npm
+versions
 
 ## For android emulation install:
 
 * https://www.virtualbox.org/
 * https://www.genymotion.com/fun-zone/
+
+### In the project folder, run npm install
 
 ## With emulator opened, then execute:
 
